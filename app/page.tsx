@@ -45,7 +45,9 @@ export default function Home() {
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuLabel onClick={logout}>Logout</DropdownMenuLabel>
+            <DropdownMenuItem onClick={logout} className="cursor-pointer">
+              Logout
+            </DropdownMenuItem>
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Billing</DropdownMenuItem>
           </DropdownMenuGroup>

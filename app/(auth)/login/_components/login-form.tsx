@@ -16,11 +16,19 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+const emailFormatRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getEmailError(email: string): string | null {
+  if (!emailFormatRegex.test(email)) return "Digite um email valido.";
+  return null;
+}
+
 export function LoginForm() {
   const router = useRouter();
   const [gitHubPending, startGitHubTransition] = useTransition();
   const [emailPending, startEmailTransition] = useTransition();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   async function signInWithGitHub() {
     startGitHubTransition(async () => {
@@ -40,14 +48,25 @@ export function LoginForm() {
   }
 
   function signInWithEmail() {
+    const normalizedEmail = email.trim().toLowerCase();
+    const validationError = getEmailError(normalizedEmail);
+
+    if (validationError) {
+      setEmailError(validationError);
+      toast.error("Digite um email valido para continuar.");
+      return;
+    }
+
+    setEmailError(null);
+
     startEmailTransition(async () => {
       await authClient.emailOtp.sendVerificationOtp({
-        email: email,
+        email: normalizedEmail,
         type: "sign-in",
         fetchOptions: {
           onSuccess: () => {
             toast.success("Verification email sent! Please check your inbox.");
-            router.push(`/verify-request?email=${email}`);
+            router.push(`/verify-request?email=${encodeURIComponent(normalizedEmail)}`);
           },
           onError: () => {
             toast.error("Failed to send verification email. Please try again.");
@@ -95,14 +114,29 @@ export function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError(null);
+              }}
+              onBlur={() => {
+                const normalizedEmail = email.trim().toLowerCase();
+                if (!normalizedEmail) {
+                  setEmailError(null);
+                  return;
+                }
+                setEmailError(getEmailError(normalizedEmail));
+              }}
               type="email"
               placeholder="email@email.com"
               required
+              aria-invalid={!!emailError}
             />
+            {emailError ? (
+              <p className="text-sm text-red-500" role="alert">{emailError}</p>
+            ) : null}
           </div>
 
-          <Button onClick={signInWithEmail} disabled={emailPending}>
+          <Button onClick={signInWithEmail} disabled={emailPending || email.trim().length === 0}>
             {emailPending ? (
               <>
                 <Loader2 className="animate-spin size-4 mr-2" />

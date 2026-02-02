@@ -3,6 +3,7 @@
 # dependencies
 .codex/*
 .agents/*
+.agentswedwq/*
 /node_modules
 /.pnp
 .pnp.*

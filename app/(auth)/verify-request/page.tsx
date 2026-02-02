@@ -13,6 +13,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { authClient } from "@/lib/auth-client";
+import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -82,7 +83,14 @@ export default function VerifyRequestPage() {
           disabled={emailPending || !isOtpComplete}
           onClick={verifyOtp}
         >
-          Verify Account
+          {emailPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <span>Loading...</span>
+            </>
+          ) : (
+            "Verify Account"
+          )}
         </Button>
       </CardContent>
     </Card>
