@@ -1,5 +1,4 @@
-"use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,38 +7,23 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+} from "./ui/dropdown-menu";
 
-export default function Home() {
-  const router = useRouter();
-
-  const logout = async function () {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/login");
-          toast.success("Logged out successfully");
-        },
-      },
-    });
-  };
-  const { data: session } = authClient.useSession();
+type ButtonUser = {
+  name: string;
+  avatarUrl: string;
+  logout: () => void;
+};
+export const ButtonUser = ({ name, avatarUrl, logout }: ButtonUser) => {
   return (
     <div>
       <h1>Welcome to the Home Page</h1>
 
-      {session ? <p>{session.user?.name}</p> : <p>Please log in.</p>}
-
       <DropdownMenu>
         <DropdownMenuTrigger className="focus:outline-none">
           <Avatar>
-            <AvatarImage
-              src={session?.user?.image || "https://github.com/shadcn.png"}
-            />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={avatarUrl || "https://github.com/shadcn.png"} />
+            <AvatarFallback>{name.charAt(0)}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -60,4 +44,4 @@ export default function Home() {
       </DropdownMenu>
     </div>
   );
-}
+};
