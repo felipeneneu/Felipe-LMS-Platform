@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import Link from "next/link";
+import { Testimonials } from "./_components/testimonials";
 
 interface featureProps {
   title: string;
@@ -81,6 +82,7 @@ export default function Home() {
           );
         })}
       </section>
+      <Testimonials />
     </>
   );
 }

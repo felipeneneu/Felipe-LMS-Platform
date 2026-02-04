@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/logo.svg";
-import { ModeToggle } from "@/components/button-darkmode";
+import { ModeToggle } from "@/components/ui/button-darkmode";
 import { authClient } from "@/lib/auth-client";
 import { buttonVariants } from "@/components/ui/button";
 import UserDropDown from "./user-dropdown";
