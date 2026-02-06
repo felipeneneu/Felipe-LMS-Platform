@@ -29,6 +29,7 @@ import {
   type CourseSchemaType,
   courseStatus,
 } from "../schema";
+import { RichTextEditor } from "@/components/rich-text-editor/editor";
 
 const defaultValues: CourseSchemaType = {
   title: "",
@@ -121,6 +122,7 @@ export function CreateCourseForm() {
           render={({ field }) => (
             <FormItem className="gap-1">
               <FormLabel>Small Description</FormLabel>
+
               <FormControl>
                 <Textarea
                   placeholder="Small description"
@@ -140,11 +142,12 @@ export function CreateCourseForm() {
             <FormItem className="gap-1">
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
+                <RichTextEditor field={field} />
+                {/* <Textarea
                   placeholder="Description"
                   className="min-h-32"
                   {...field}
-                />
+                /> */}
               </FormControl>
               <FormMessage className={fixedMessageClassName}> </FormMessage>
             </FormItem>
