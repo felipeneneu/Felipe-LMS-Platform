@@ -1,10 +1,24 @@
 "use client";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import { Menubar } from "./menubar";
+import type { ControllerRenderProps, FieldValues } from "react-hook-form";
 
-export function RichTextEditor({ field }: { field: any }) {
+type RichTextEditorField = ControllerRenderProps<FieldValues, string>;
+
+function parseContent(value: unknown): JSONContent | string {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return "<p></p>";
+  }
+  try {
+    return JSON.parse(value) as JSONContent;
+  } catch {
+    return value;
+  }
+}
+
+export function RichTextEditor({ field }: { field: RichTextEditorField }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -23,8 +37,7 @@ export function RichTextEditor({ field }: { field: any }) {
     onUpdate: ({ editor }) => {
       field.onChange(JSON.stringify(editor.getJSON()));
     },
-
-    content: field.value ? JSON.parse(field.value) : "<p>Hello World 🚀</p>",
+    content: parseContent(field.value),
   });
 
   return (
