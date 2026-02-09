@@ -30,6 +30,7 @@ import {
   courseStatus,
 } from "../schema";
 import { RichTextEditor } from "@/components/rich-text-editor/editor";
+import { Uploader } from "@/components/file-uploader/uploader";
 
 const defaultValues: CourseSchemaType = {
   title: "",
@@ -143,11 +144,6 @@ export function CreateCourseForm() {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <RichTextEditor field={field} />
-                {/* <Textarea
-                  placeholder="Description"
-                  className="min-h-32"
-                  {...field}
-                /> */}
               </FormControl>
               <FormMessage className={fixedMessageClassName}> </FormMessage>
             </FormItem>
@@ -161,7 +157,8 @@ export function CreateCourseForm() {
             <FormItem className="gap-1">
               <FormLabel>Thumbnail image</FormLabel>
               <FormControl>
-                <Input placeholder="Thumbnail URL" {...field} />
+                <Uploader />
+                {/* <Input placeholder="Thumbnail URL" {...field} /> */}
               </FormControl>
               <FormMessage className={fixedMessageClassName}> </FormMessage>
             </FormItem>
