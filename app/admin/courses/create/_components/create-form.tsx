@@ -157,7 +157,7 @@ export function CreateCourseForm() {
             <FormItem className="gap-1">
               <FormLabel>Thumbnail image</FormLabel>
               <FormControl>
-                <Uploader />
+                <Uploader onChange={field.onChange} value={field.value} />
                 {/* <Input placeholder="Thumbnail URL" {...field} /> */}
               </FormControl>
               <FormMessage className={fixedMessageClassName}> </FormMessage>
